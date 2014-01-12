@@ -1,0 +1,12 @@
+_welcomeapi:
+    pattern:  /
+    defaults: { _controller: MobileApiBundle:Welcome:index }
+
+_demoapi_secured:
+    resource: "@MobileApiBundle/Controller/SecuredController.php"
+    type:     annotation
+
+_demoapi:
+    resource: "@MobileApiBundle/Controller/DemoController.php"
+    type:     annotation
+    prefix:   /demo
