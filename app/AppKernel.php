@@ -19,7 +19,6 @@ class AppKernel extends Kernel
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            $bundles[] = new Acme\DemoBundle\AcmeDemoBundle();  
 //            $bundles[] = new Sorin\BarApi\AcmeDemoBundle();  
             $bundles[] = new Sorin\MobileApiBundle\MobileApiBundle();  
 //            $bundles[] = new Sorin\ReportingApi\AcmeDemoBundle();  
