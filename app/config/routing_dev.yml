@@ -10,10 +10,9 @@ _configurator:
     resource: "@SensioDistributionBundle/Resources/config/routing/webconfigurator.xml"
     prefix:   /_configurator
 
+#_mobileapi:
+#    resource: "@FOSRestBundle/Resources/config/routing.xml"
+#    prefix:   /mobile_api/
+
 _main:
     resource: routing.yml
-
-
-# AcmeDemoBundle routes (to be removed)
-_mobile_api:
-    resource: "@MobileApiBundle/Resources/config/routing.yml"

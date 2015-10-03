@@ -16,13 +16,12 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new Sorin\Bundle\RestaurantBundle\SorinRestaurantBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-//            $bundles[] = new Sorin\BarApi\AcmeDemoBundle();  
-            $bundles[] = new Sorin\MobileApiBundle\MobileApiBundle();  
-//            $bundles[] = new Sorin\ReportingApi\AcmeDemoBundle();  
-            
+            $bundles[] = new FOS\RestBundle\FOSRestBundle();
+
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
