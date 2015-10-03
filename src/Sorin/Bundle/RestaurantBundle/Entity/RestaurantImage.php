@@ -3,6 +3,9 @@
 namespace Sorin\Bundle\RestaurantBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity
@@ -31,6 +34,7 @@ class RestaurantImage
     /**
      * @ORM\ManyToOne(targetEntity="Restaurant", inversedBy="images", fetch="EAGER")
      * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
+     * @MaxDepth(1)
      */
     public $restaurant;
 
@@ -90,5 +94,4 @@ class RestaurantImage
     {
         return $this->restaurant;
     }
-
 }
