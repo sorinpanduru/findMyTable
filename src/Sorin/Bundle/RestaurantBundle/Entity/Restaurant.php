@@ -31,6 +31,12 @@ class Restaurant
     public $name;
 
     /**
+     *
+     * @ORM\OneToMany(targetEntity="RestaurantTimetable", mappedBy="restaurant", fetch="LAZY")
+     */
+    public $timetable;
+
+    /**
      * @ORM\OneToMany(targetEntity="RestaurantImage", mappedBy="restaurant", fetch="EAGER")
      */
     public $images;

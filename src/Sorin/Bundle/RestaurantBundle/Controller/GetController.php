@@ -55,6 +55,6 @@ class GetController extends Controller
                     ->enableMaxDepthChecks()
             );
 
-        return new Response($jsonContent);
+        return new Response($jsonContent, 200, array('Content-type' => 'text,json'));
     }
 }
