@@ -7,9 +7,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 
-use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerBuilder;
 
 use Sorin\Bundle\RestaurantBundle\Entity;
+use Symfony\Component\Routing\Router;
 
 class GetController extends Controller
 {
@@ -21,9 +22,21 @@ class GetController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $restaurantRepository = $em->getRepository('Sorin\Bundle\RestaurantBundle\Entity\Restaurant');
-        $restaurant = $restaurantRepository->findAll();
+        $restaurants = $restaurantRepository->findAll();
 
-        return $this->serializeResponse($restaurant);
+        /** @var Entity\Restaurant $restaurant */
+        foreach($restaurants as &$restaurant)
+        {
+            /** @var Entity\RestaurantImage $restaurant_image */
+            foreach($restaurant->getImages() as &$restaurant_image)
+            {
+                /** @var Router $router */
+                $router = $this->container->get('router');
+                $restaurant_image->setImageUrl($restaurant_image->getFullImageUrl($router));
+            }
+        }
+
+        return $this->serializeResponse($restaurants);
     }
 
     /**
@@ -35,7 +48,15 @@ class GetController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $restaurantRepository = $em->getRepository('Sorin\Bundle\RestaurantBundle\Entity\Restaurant');
+        /** @var Entity\Restaurant $restaurant */
         $restaurant = $restaurantRepository->find($id);
+
+        foreach($restaurant->getImages() as &$restaurant_image)
+        {
+            /** @var Router $router */
+            $router = $this->container->get('router');
+            $restaurant_image->setImageUrl($restaurant_image->getFullImageUrl($router));
+        }
 
         return $this->serializeResponse($restaurant);
     }
@@ -46,15 +67,8 @@ class GetController extends Controller
      */
     private function serializeResponse($entity)
     {
-        $serializer = $this->container->get('jms_serializer');
-        $jsonContent = $serializer
-            ->serialize(
-                $entity,
-                'json',
-                SerializationContext::create()
-                    ->enableMaxDepthChecks()
-            );
-
-        return new Response($jsonContent, 200, array('Content-type' => 'text,json'));
+        $serializer = SerializerBuilder::create()->build();
+        $jsonContent = $serializer->serialize($entity, 'json');
+        return new Response($jsonContent, 200);
     }
 }

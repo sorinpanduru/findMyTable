@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Routing\Router;
 
 /**
  * @ORM\Entity
@@ -93,5 +94,13 @@ class RestaurantImage
     public function getRestaurant()
     {
         return $this->restaurant;
+    }
+    
+    public function getFullImageUrl(Router $router)
+    {
+        return $router->getContext()->getScheme() . '://' .
+            $router->getContext()->getHost() .
+            $router->getContext()->getBaseUrl() . '/' .
+            $this->getImageUrl();
     }
 }
