@@ -1,6 +1,6 @@
 <?php
 
-namespace Sorin\Bundle\RestaurantBundle\Controller;
+namespace Sorin\Bundle\RestaurantBundle\Controller\Api;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -12,7 +12,7 @@ use JMS\Serializer\SerializerBuilder;
 use Sorin\Bundle\RestaurantBundle\Entity;
 use Symfony\Component\Routing\Router;
 
-class GetController extends Controller
+class ApiRestaurantController extends Controller
 {
     /**
      * @Route("/getRestaurantList", name="getRestaurantList")
@@ -40,6 +40,17 @@ class GetController extends Controller
     }
 
     /**
+     * @param mixed $entity
+     * @return Response
+     */
+    private function serializeResponse($entity)
+    {
+        $serializer = SerializerBuilder::create()->build();
+        $jsonContent = $serializer->serialize($entity, 'json');
+        return new Response($jsonContent, 200);
+    }
+
+    /**
      * @Route("/getRestaurantDetails/{id}", name="getRestaurantDetails")
      * @param int $id
      * @return Response
@@ -59,16 +70,5 @@ class GetController extends Controller
         }
 
         return $this->serializeResponse($restaurant);
-    }
-
-    /**
-     * @param mixed $entity
-     * @return Response
-     */
-    private function serializeResponse($entity)
-    {
-        $serializer = SerializerBuilder::create()->build();
-        $jsonContent = $serializer->serialize($entity, 'json');
-        return new Response($jsonContent, 200);
     }
 }

@@ -7,8 +7,8 @@
         "psr-0": { "": "src/" }
     },
     "require": {
-        "php": ">=5.3.3",
-        "symfony/symfony": "~2.4",
+        "php": ">=7.0",
+        "symfony/symfony": "~2.8",
         "doctrine/orm": "2.4.*",
         "doctrine/doctrine-bundle": "~1.2",
         "twig/extensions": "~1.0",
@@ -19,8 +19,9 @@
         "sensio/framework-extra-bundle": "~3.0",
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
-        "friendsofsymfony/rest-bundle": "^1.7",
-        "jms/serializer": "^1.1"
+        "jms/serializer": "^1.1",
+        "jms/serializer-bundle": "^1.1",
+        "friendsofsymfony/rest-bundle": "^1.7"
     },
     "scripts": {
         "post-install-cmd": [
@@ -48,7 +49,7 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": {
-            "dev-master": "2.4-dev"
+            "dev-master": "2.8-dev"
         }
     }
 }

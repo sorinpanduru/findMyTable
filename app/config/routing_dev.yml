@@ -10,9 +10,10 @@ _configurator:
     resource: "@SensioDistributionBundle/Resources/config/routing/webconfigurator.xml"
     prefix:   /_configurator
 
-#_mobileapi:
-#    resource: "@FOSRestBundle/Resources/config/routing.xml"
-#    prefix:   /mobile_api/
+restaurant:
+    type: rest
+    resource: "@SorinRestaurantBundle/Resources/config/restaurant_routes.yml"
+
 
 _main:
     resource: routing.yml
