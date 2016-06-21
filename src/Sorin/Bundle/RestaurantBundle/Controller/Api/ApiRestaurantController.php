@@ -2,17 +2,16 @@
 
 namespace Sorin\Bundle\RestaurantBundle\Controller\Api;
 
+use Sorin\Bundle\RestaurantBundle\Controller\MyController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 
-use JMS\Serializer\SerializerBuilder;
-
 use Sorin\Bundle\RestaurantBundle\Entity;
 use Symfony\Component\Routing\Router;
 
-class ApiRestaurantController extends Controller
+class ApiRestaurantController extends MyController
 {
     /**
      * @Route("/getRestaurantList", name="getRestaurantList")
@@ -36,18 +35,7 @@ class ApiRestaurantController extends Controller
             }
         }
 
-        return $this->serializeResponse($restaurants);
-    }
-
-    /**
-     * @param mixed $entity
-     * @return Response
-     */
-    private function serializeResponse($entity)
-    {
-        $serializer = SerializerBuilder::create()->build();
-        $jsonContent = $serializer->serialize($entity, 'json');
-        return new Response($jsonContent, 200);
+        return static::serializeResponse($restaurants);
     }
 
     /**
@@ -69,6 +57,6 @@ class ApiRestaurantController extends Controller
             $restaurant_image->setImageUrl($restaurant_image->getFullImageUrl($router));
         }
 
-        return $this->serializeResponse($restaurant);
+        return static::serializeResponse($restaurant);
     }
 }
