@@ -1,3 +1,4 @@
 restaurant:
     type:     rest
-    resource: Sorin\Bundle\RestaurantBundle\Controller\Api\ApiRestaurantController
+    resource: Sorin\Bundle\RestaurantBundle\Controller\Api\RestaurantRestController
+    prefix: /v1

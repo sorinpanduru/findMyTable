@@ -41,6 +41,8 @@ class RestaurantController extends Controller
      * @Route("/", name="restaurant_create")
      * @Method("POST")
      * @Template("SorinRestaurantBundle:Restaurant:new.html.twig")
+     * @param Request $request
+     * @return array
      */
     public function createAction(Request $request)
     {

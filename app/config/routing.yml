@@ -1,5 +1,3 @@
-sorin_restaurant:
-    resource: "@SorinRestaurantBundle/Controller/"
-    type:     annotation
-    prefix:   /mobile_api
-
+restaurant:
+    type: rest
+    resource: "@SorinRestaurantBundle/Resources/config/restaurant_routes.yml"
