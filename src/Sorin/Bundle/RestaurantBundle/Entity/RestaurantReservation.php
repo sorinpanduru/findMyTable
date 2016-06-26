@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\MaxDepth;
+use JMS\Serializer\Exception\RuntimeException;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -15,6 +16,10 @@ use Symfony\Component\Validator\Constraints\DateTime;
  */
 class RestaurantReservation
 {
+    const RESERVATION_STATUS_NEW = 10;
+    const RESERVATION_STATUS_CONFIRMED = 20;
+    const RESERVATION_STATUS_CANCELED = 50;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -32,12 +37,17 @@ class RestaurantReservation
     /**
      * @ORM\Column(type="string", length=100)
      */
-    public $start_time;
+    public $startTime;
 
     /**
-     * @ORM\Column(type="integer", length=100)
+     * @ORM\Column(type="integer")
      */
     public $people;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    public $statusId;
 
     /**
      * Get id
@@ -52,10 +62,10 @@ class RestaurantReservation
     /**
      * Set restaurant
      *
-     * @param \Sorin\Bundle\RestaurantBundle\Entity\Restaurant $restaurant
-     * @return RestaurantImage
+     * @param Restaurant $restaurant
+     * @return RestaurantReservation
      */
-    public function setRestaurant(\Sorin\Bundle\RestaurantBundle\Entity\Restaurant $restaurant = null)
+    public function setRestaurant(Restaurant $restaurant = null)
     {
         $this->restaurant = $restaurant;
 
@@ -64,17 +74,32 @@ class RestaurantReservation
 
     public function setStartTime($start_time)
     {
-        $startTime = new \DateTime($start_time);
+        $startTime = new \DateTime($start_time, new \DateTimeZone("UTC"));
         if(!$startTime)
         {
             throw new \RuntimeException(sprintf("Invalid Date Format: %s", $start_time));
         }
-        $this->start_time = $startTime->format('Y-m-d');
+        $this->startTime = $startTime->format('Y-m-d H:i:s');
+        return $this;
     }
 
-    public function setPeople($people)
+    public function setPeople(int $people)
     {
         $this->people = $people;
+        return $this;
+    }
+
+    public function setStatusId(int $statusId)
+    {
+        if($statusId == self::RESERVATION_STATUS_NEW ||
+            $statusId == self::RESERVATION_STATUS_CANCELED ||
+            $statusId == self::RESERVATION_STATUS_CONFIRMED
+        ){
+            $this->statusId = $statusId;
+        }else{
+            throw new \RuntimeException("Invalid statusId provided: " . $statusId);
+        }
+        return $this;
     }
 
     /**

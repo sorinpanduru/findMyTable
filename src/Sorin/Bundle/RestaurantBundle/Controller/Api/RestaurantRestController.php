@@ -96,9 +96,10 @@ class RestaurantRestController extends MyController
         $people = $request->get('people');
 
         $restaurantReservation = new RestaurantReservation();
-        $restaurantReservation->setStartTime($startTime);
-        $restaurantReservation->setPeople($people);
-        $restaurantReservation->setRestaurant($restaurant);
+        $restaurantReservation->setStartTime($startTime)
+            ->setPeople($people)
+            ->setRestaurant($restaurant)
+            ->setStatusId(RestaurantReservation::RESERVATION_STATUS_NEW);
 
         $em->persist($restaurantReservation);
         $em->flush();
