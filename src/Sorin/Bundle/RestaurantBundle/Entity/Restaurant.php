@@ -13,6 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Restaurant
 {
+
+    const RESTAURANT_NOT_FOUND = "Restaurant with id %s not found";
+    
     /**
      * @var integer
      *
@@ -41,6 +44,10 @@ class Restaurant
      */
     public $images;
 
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -50,6 +57,16 @@ class Restaurant
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
@@ -63,21 +80,6 @@ class Restaurant
         $this->name = $name;
 
         return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function __construct()
-    {
-        $this->images = new ArrayCollection();
     }
 
     /**

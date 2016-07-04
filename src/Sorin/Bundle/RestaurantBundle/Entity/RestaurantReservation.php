@@ -20,6 +20,7 @@ class RestaurantReservation
     const RESERVATION_STATUS_CONFIRMED = 20;
     const RESERVATION_STATUS_CANCELED = 50;
 
+    const RESTAURANT_RESERVATION_NOT_FOUND = "Reservation %s not found.";
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -50,6 +51,26 @@ class RestaurantReservation
     public $statusId;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    public $cancelReason;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    public $cancelAt;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    public $confirmDetails;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    public $confirmAt;
+
+    /**
      * Get id
      *
      * @return integer
@@ -60,43 +81,81 @@ class RestaurantReservation
     }
 
     /**
-     * Set restaurant
-     *
-     * @param Restaurant $restaurant
-     * @return RestaurantReservation
+     * @param string $start_time
+     * @return $this
      */
-    public function setRestaurant(Restaurant $restaurant = null)
-    {
-        $this->restaurant = $restaurant;
-
-        return $this;
-    }
-
-    public function setStartTime($start_time)
+    public function setStartTime(string $start_time)
     {
         $startTime = new \DateTime($start_time, new \DateTimeZone("UTC"));
-        if(!$startTime)
-        {
+        if (!$startTime) {
             throw new \RuntimeException(sprintf("Invalid Date Format: %s", $start_time));
         }
         $this->startTime = $startTime->format('Y-m-d H:i:s');
         return $this;
     }
 
+    /**
+     * @param int $people
+     * @return $this
+     */
     public function setPeople(int $people)
     {
         $this->people = $people;
         return $this;
     }
 
+    /**
+     * @param string $cancelReason
+     * @return $this
+     */
+    public function setCancelReason(string $cancelReason)
+    {
+        $this->cancelReason = $cancelReason;
+        return $this;
+    }
+
+    /**
+     * @param DateTime $cancelAt
+     * @return $this
+     */
+    public function setCancelAt(DateTime $cancelAt)
+    {
+        $this->cancelAt = $cancelAt;
+        return $this;
+    }
+
+    /**
+     * @param string $confirmDetails
+     * @return $this
+     */
+    public function setConfirmDetails(string $confirmDetails)
+    {
+        $this->confirmDetails = $confirmDetails;
+        return $this;
+    }
+
+    /**
+     * @param DateTime $confirmAt
+     * @return $this
+     */
+    public function setConfirmAt(DateTime $confirmAt)
+    {
+        $this->confirmAt = $confirmAt;
+        return $this;
+    }
+
+    /**
+     * @param int $statusId
+     * @return $this
+     */
     public function setStatusId(int $statusId)
     {
-        if($statusId == self::RESERVATION_STATUS_NEW ||
+        if ($statusId == self::RESERVATION_STATUS_NEW ||
             $statusId == self::RESERVATION_STATUS_CANCELED ||
             $statusId == self::RESERVATION_STATUS_CONFIRMED
-        ){
+        ) {
             $this->statusId = $statusId;
-        }else{
+        } else {
             throw new \RuntimeException("Invalid statusId provided: " . $statusId);
         }
         return $this;
@@ -110,5 +169,18 @@ class RestaurantReservation
     public function getRestaurant()
     {
         return $this->restaurant;
+    }
+
+    /**
+     * Set restaurant
+     *
+     * @param Restaurant $restaurant
+     * @return RestaurantReservation
+     */
+    public function setRestaurant(Restaurant $restaurant = null)
+    {
+        $this->restaurant = $restaurant;
+
+        return $this;
     }
 }

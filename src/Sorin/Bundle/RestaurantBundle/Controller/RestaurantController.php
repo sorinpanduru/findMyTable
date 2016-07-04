@@ -127,6 +127,22 @@ class RestaurantController extends Controller
     }
 
     /**
+     * Creates a form to delete a Restaurant entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('restaurant_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->getForm();
+    }
+
+    /**
      * Displays a form to edit an existing Restaurant entity.
      *
      * @Route("/{id}/edit", name="restaurant_edit")
@@ -171,6 +187,7 @@ class RestaurantController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Restaurant entity.
      *
@@ -204,6 +221,7 @@ class RestaurantController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Restaurant entity.
      *
@@ -228,22 +246,5 @@ class RestaurantController extends Controller
         }
 
         return $this->redirect($this->generateUrl('restaurant'));
-    }
-
-    /**
-     * Creates a form to delete a Restaurant entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('restaurant_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
     }
 }

@@ -51,26 +51,13 @@ class RestaurantImage
     }
 
     /**
-     * Set name
+     * Get restaurant
      *
-     * @param string $imageUrl
-     * @return Restaurant
+     * @return \Sorin\Bundle\RestaurantBundle\Entity\Restaurant 
      */
-    public function setImageUrl($imageUrl)
+    public function getRestaurant()
     {
-        $this->imageUrl = $imageUrl;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getImageUrl()
-    {
-        return $this->imageUrl;
+        return $this->restaurant;
     }
 
     /**
@@ -86,21 +73,34 @@ class RestaurantImage
         return $this;
     }
 
-    /**
-     * Get restaurant
-     *
-     * @return \Sorin\Bundle\RestaurantBundle\Entity\Restaurant 
-     */
-    public function getRestaurant()
-    {
-        return $this->restaurant;
-    }
-    
     public function getFullImageUrl(Router $router)
     {
         return $router->getContext()->getScheme() . '://' .
-            $router->getContext()->getHost() .
-            $router->getContext()->getBaseUrl() . '/' .
-            $this->getImageUrl();
+        $router->getContext()->getHost() .
+        $router->getContext()->getBaseUrl() . '/' .
+        $this->getImageUrl();
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getImageUrl()
+    {
+        return $this->imageUrl;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $imageUrl
+     * @return Restaurant
+     */
+    public function setImageUrl($imageUrl)
+    {
+        $this->imageUrl = $imageUrl;
+
+        return $this;
     }
 }

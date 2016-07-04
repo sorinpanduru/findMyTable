@@ -42,6 +42,15 @@ class RestaurantTimetable
      */
     protected $restaurant;
 
+    /**
+     * Get restaurant
+     *
+     * @return \Sorin\Bundle\RestaurantBundle\Entity\Restaurant
+     */
+    public function getRestaurant()
+    {
+        return $this->restaurant;
+    }
 
     /**
      * Set restaurant
@@ -54,16 +63,6 @@ class RestaurantTimetable
         $this->restaurant = $restaurant;
 
         return $this;
-    }
-
-    /**
-     * Get restaurant
-     *
-     * @return \Sorin\Bundle\RestaurantBundle\Entity\Restaurant
-     */
-    public function getRestaurant()
-    {
-        return $this->restaurant;
     }
 
     private function __serialize()
