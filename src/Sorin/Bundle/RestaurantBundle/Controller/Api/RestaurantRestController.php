@@ -2,7 +2,6 @@
 
 namespace Sorin\Bundle\RestaurantBundle\Controller\Api;
 
-use Doctrine\ORM\EntityRepository;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Request\ParamReader;
 use Sorin\Bundle\RestaurantBundle\Controller\MyController;
@@ -13,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\View\View;
+use Doctrine\ORM\EntityRepository;
 use Sorin\Bundle\RestaurantBundle\Entity;
 use Sorin\Bundle\RestaurantBundle\Entity\RestaurantReservation;
 use Symfony\Component\Routing\Router;
@@ -100,6 +100,7 @@ class RestaurantRestController extends MyController
         $restaurantReservation->setStartTime($startTime)
             ->setPeople($people)
             ->setRestaurant($restaurant)
+            ->setUser($this->get('security.token_storage')->getToken()->getUser())
             ->setStatusId(RestaurantReservation::RESERVATION_STATUS_NEW);
 
         $em->persist($restaurantReservation);
@@ -121,12 +122,7 @@ class RestaurantRestController extends MyController
         /** @var Entity\RestaurantReservation $restaurant */
         $restaurantReservation = $reservationRepository->find($reservationId);
 
-        if (!$restaurant) {
-            return static::throwError(
-                sprintf(Entity\RestaurantReservation::RESTAURANT_RESERVATION_NOT_FOUND, $reservationId),
-                JsonResponse::HTTP_NOT_FOUND
-            );
-        }
+        $this->checkCustomerAccess($restaurantReservation);
 
         $cancelReason = $request->get('reason');
 
@@ -153,18 +149,38 @@ class RestaurantRestController extends MyController
         /** @var Entity\RestaurantReservation $restaurant */
         $restaurantReservation = $reservationRepository->find($reservationId);
 
-        if (!$restaurant) {
-            return static::throwError(
-                sprintf(Entity\RestaurantReservation::RESTAURANT_RESERVATION_NOT_FOUND, $reservationId),
-                JsonResponse::HTTP_NOT_FOUND
-            );
-        }
+        $this->checkRestaurantAccess($restaurantReservation);
 
         $confirmDetails = $request->get('reason');
-
         $restaurantReservation->setConfirmAt(new \DateTime())
             ->setConfirmDetails($confirmDetails)
             ->setStatusId(RestaurantReservation::RESERVATION_STATUS_CONFIRMED);
+
+        $em->persist($restaurantReservation);
+        $em->flush();
+
+        return static::returnSerializedResponse($restaurantReservation);
+    }
+
+    /**
+     * @param Request $request
+     * @param int $reservationId
+     * @return JsonResponse
+     */
+    public function postDeclineRestaurantReservationAction(Request $request, $reservationId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var EntityRepository $reservationRepository */
+        $reservationRepository = $em->getRepository('Sorin\Bundle\RestaurantBundle\Entity\RestaurantReservation');
+        /** @var Entity\RestaurantReservation $restaurant */
+        $restaurantReservation = $reservationRepository->find($reservationId);
+
+        $this->checkRestaurantAccess($restaurantReservation);
+
+        $confirmDetails = $request->get('reason');
+        $restaurantReservation->setConfirmAt(new \DateTime)
+            ->setConfirmDetails($confirmDetails)
+            ->setStatusId(RestaurantReservation::RESERVATION_STATUS_REJECTED);
 
         $em->persist($restaurantReservation);
         $em->flush();

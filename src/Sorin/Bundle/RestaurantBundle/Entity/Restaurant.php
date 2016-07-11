@@ -4,6 +4,9 @@ namespace Sorin\Bundle\RestaurantBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * Restaurant
@@ -43,6 +46,13 @@ class Restaurant
      * @ORM\OneToMany(targetEntity="RestaurantImage", mappedBy="restaurant", fetch="EAGER")
      */
     protected $images;
+
+    /**
+     * @ORM\OneToOne(targetEntity="User", fetch="EAGER")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @MaxDepth(1)
+     */
+    public $user;
 
     public function __construct()
     {
@@ -113,5 +123,16 @@ class Restaurant
     public function getImages()
     {
         return $this->images;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser(RestaurantUser $user)
+    {
+        $this->user = $user;
+        return $this;
     }
 }

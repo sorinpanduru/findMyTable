@@ -19,6 +19,7 @@ class RestaurantReservation
     const RESERVATION_STATUS_NEW = 10;
     const RESERVATION_STATUS_CONFIRMED = 20;
     const RESERVATION_STATUS_CANCELED = 50;
+    const RESERVATION_STATUS_REJECTED = 30;
 
     const RESTAURANT_RESERVATION_NOT_FOUND = "Reservation %s not found.";
     /**
@@ -36,7 +37,7 @@ class RestaurantReservation
     public $restaurant;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="datetime", length=100)
      */
     public $startTime;
 
@@ -71,6 +72,13 @@ class RestaurantReservation
     public $confirmAt;
 
     /**
+     * @ORM\ManyToOne(targetEntity="User", fetch="EAGER")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @MaxDepth(1)
+     */
+    public $user;
+
+    /**
      * Get id
      *
      * @return integer
@@ -90,7 +98,7 @@ class RestaurantReservation
         if (!$startTime) {
             throw new \RuntimeException(sprintf("Invalid Date Format: %s", $start_time));
         }
-        $this->startTime = $startTime->format('Y-m-d H:i:s');
+        $this->startTime = $startTime;
         return $this;
     }
 
@@ -115,10 +123,10 @@ class RestaurantReservation
     }
 
     /**
-     * @param DateTime $cancelAt
+     * @param \DateTime $cancelAt
      * @return $this
      */
-    public function setCancelAt(DateTime $cancelAt)
+    public function setCancelAt(\DateTime $cancelAt)
     {
         $this->cancelAt = $cancelAt;
         return $this;
@@ -135,10 +143,10 @@ class RestaurantReservation
     }
 
     /**
-     * @param DateTime $confirmAt
+     * @param \DateTime $confirmAt
      * @return $this
      */
-    public function setConfirmAt(DateTime $confirmAt)
+    public function setConfirmAt(\DateTime $confirmAt)
     {
         $this->confirmAt = $confirmAt;
         return $this;
@@ -152,7 +160,8 @@ class RestaurantReservation
     {
         if ($statusId == self::RESERVATION_STATUS_NEW ||
             $statusId == self::RESERVATION_STATUS_CANCELED ||
-            $statusId == self::RESERVATION_STATUS_CONFIRMED
+            $statusId == self::RESERVATION_STATUS_CONFIRMED ||
+            $statusId == self::RESERVATION_STATUS_REJECTED
         ) {
             $this->statusId = $statusId;
         } else {
@@ -180,7 +189,17 @@ class RestaurantReservation
     public function setRestaurant(Restaurant $restaurant = null)
     {
         $this->restaurant = $restaurant;
+        return $this;
+    }
 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user)
+    {
+        $this->user = $user;
         return $this;
     }
 }

@@ -75,6 +75,21 @@ class User implements UserInterface, \Serializable
      */
     protected $modifiedAt;
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getFullName()
+    {
+        return $this->firstName . " " . $this->lastName;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
     public function setEmail(string $email)
     {
         $this->email = $email;
