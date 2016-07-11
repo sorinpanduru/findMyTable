@@ -15,13 +15,13 @@
         "symfony/assetic-bundle": "~2.3",
         "symfony/swiftmailer-bundle": "~2.3",
         "symfony/monolog-bundle": "~2.4",
-        "sensio/distribution-bundle": "~2.3",
         "sensio/framework-extra-bundle": "~3.0",
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
         "jms/serializer": "^1.1",
         "jms/serializer-bundle": "^1.1",
-        "friendsofsymfony/rest-bundle": "^1.7"
+        "friendsofsymfony/rest-bundle": "^1.7",
+	"sensio/distribution-bundle": "~4.0"
     },
     "scripts": {
         "post-install-cmd": [

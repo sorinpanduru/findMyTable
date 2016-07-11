@@ -19,25 +19,25 @@ class RestaurantImage
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    public $imageUrl;
+    protected $imageUrl;
 
     /**
      * @var int
      * @ORM\Column(type="integer", length=1)
      */
-    public $isMainImage;
+    protected $isMainImage;
 
     /**
      * @ORM\ManyToOne(targetEntity="Restaurant", inversedBy="images", fetch="EAGER")
      * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
      * @MaxDepth(1)
      */
-    public $restaurant;
+    protected $restaurant;
 
 
     /**

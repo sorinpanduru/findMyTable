@@ -24,25 +24,25 @@ class Restaurant
      * @ORM\GeneratedValue(strategy="AUTO")
      */
 
-    public $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    public $name;
+    protected $name;
 
     /**
      *
      * @ORM\OneToMany(targetEntity="RestaurantTimetable", mappedBy="restaurant", fetch="LAZY")
      */
-    public $timetable;
+    protected $timetable;
 
     /**
      * @ORM\OneToMany(targetEntity="RestaurantImage", mappedBy="restaurant", fetch="EAGER")
      */
-    public $images;
+    protected $images;
 
     public function __construct()
     {
