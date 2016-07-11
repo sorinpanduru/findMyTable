@@ -27,56 +27,56 @@ class RestaurantReservation
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    public $id;
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Restaurant", inversedBy="images", fetch="EAGER")
      * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
      * @MaxDepth(1)
      */
-    public $restaurant;
+    protected $restaurant;
 
     /**
      * @ORM\Column(type="datetime", length=100)
      */
-    public $startTime;
+    protected $startTime;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $people;
+    protected $people;
 
     /**
      * @ORM\Column(type="integer")
      */
-    public $statusId;
+    protected $statusId;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    public $cancelReason;
+    protected $cancelReason;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    public $cancelAt;
+    protected $cancelAt;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    public $confirmDetails;
+    protected $confirmDetails;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    public $confirmAt;
+    protected $confirmAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", fetch="EAGER")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * @MaxDepth(1)
      */
-    public $user;
+    protected $user;
 
     /**
      * Get id

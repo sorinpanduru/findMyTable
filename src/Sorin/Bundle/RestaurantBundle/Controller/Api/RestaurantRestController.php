@@ -45,6 +45,42 @@ class RestaurantRestController extends MyController
     }
 
     /**
+     * @return JsonResponse
+     */
+    public function getRestaurantsNearbyAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $city = $request->get('city');
+
+        if(!$city)
+        {
+            return static::throwError(
+                sprintf("Invalid Location provided %s.",
+                    $city
+                )
+            );
+        }
+
+        /** @var EntityRepository $restaurantRepository */
+        $restaurantRepository = $em->getRepository('Sorin\Bundle\RestaurantBundle\Entity\Restaurant');
+        $restaurants = $restaurantRepository->findBy(array('city' => $city));
+
+        /** @var Entity\Restaurant $restaurant */
+        foreach($restaurants as &$restaurant)
+        {
+            /** @var Entity\RestaurantImage $restaurant_image */
+            foreach($restaurant->getImages() as &$restaurant_image)
+            {
+                /** @var Router $router */
+                $router = $this->container->get('router');
+                $restaurant_image->setImageUrl($restaurant_image->getFullImageUrl($router));
+            }
+        }
+
+        return static::returnSerializedResponse($restaurants);
+    }
+
+    /**
      * @param int $id
      * @return JsonResponse
      */

@@ -4,6 +4,7 @@ namespace Sorin\Bundle\RestaurantBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * Restaurant
@@ -11,11 +12,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="user")
  * @ORM\Entity
  */
-class User implements UserInterface, \Serializable
+class User implements UserInterface, \Serializable, AdvancedUserInterface
 {
 
     const USER_TYPE_CUSTOMER = 1;
     const USER_TYPE_RESTAURANT_USER = 2;
+
+    const USER_STATUS_INACTIVE = 0;
+    const USER_STATUS_ACTIVE = 1;
     /**
      * @var integer
      *
@@ -75,6 +79,12 @@ class User implements UserInterface, \Serializable
      */
     protected $modifiedAt;
 
+    /**
+     * @var integer
+     * @ORM\Column(name="is_active", type="integer", nullable=true)
+     */
+    protected $isActive;
+
     public function getId()
     {
         return $this->id;
@@ -88,6 +98,11 @@ class User implements UserInterface, \Serializable
     public function getEmail()
     {
         return $this->email;
+    }
+
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 
     public function setEmail(string $email)
@@ -110,7 +125,7 @@ class User implements UserInterface, \Serializable
 
     public function setPassword(string $password)
     {
-        $this->password = md5($password);
+        $this->password = $password;
         return $this;
     }
 
@@ -128,15 +143,26 @@ class User implements UserInterface, \Serializable
 
     public function setUserType(int $userType)
     {
-        if($userType !== self::USER_TYPE_RESTAURANT_USER &&
-            $userType !== self::USER_TYPE_CUSTOMER
+        if($userType === self::USER_TYPE_RESTAURANT_USER ||
+            $userType === self::USER_TYPE_CUSTOMER
         ){
             $this->userType = $userType;
         }
+        return $this;
+    }
+
+    public function setIsActive(int $isActive)
+    {
+        if($isActive === self::USER_STATUS_INACTIVE || $isActive === self::USER_STATUS_ACTIVE)
+        {
+            $this->isActive = $isActive;
+        }
+        return $this;
     }
 
     public function eraseCredentials()
     {
+        $this->setPassword('');
     }
 
     public function getSalt()
@@ -159,10 +185,29 @@ class User implements UserInterface, \Serializable
     {
         if($this->userType == self::USER_TYPE_CUSTOMER) {
             return array('ROLE_CUSTOMER');
-        }elseif($this->userType == self::USER_TYPE_RESTAURANT_USER)
-        {
+        }elseif($this->userType == self::USER_TYPE_RESTAURANT_USER) {
             return array('ROLE_RESTAURANT_USER');
         }
+    }
+
+    public function isEnabled()
+    {
+        return $this->getIsActive() == 1 ? true : false;
+    }
+
+    public function isAccountNonExpired()
+    {
+        return $this->isEnabled();
+    }
+
+    public function isAccountNonLocked()
+    {
+        return $this->isEnabled();
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return $this->isEnabled();
     }
 
     /** @see \Serializable::serialize() */

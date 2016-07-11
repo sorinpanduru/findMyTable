@@ -1,0 +1,4 @@
+customer:
+    type:     rest
+    resource: Sorin\Bundle\RestaurantBundle\Controller\Api\CustomerRestController
+    prefix: /v1

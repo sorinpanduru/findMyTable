@@ -1,3 +1,6 @@
 restaurant:
     type: rest
     resource: "@SorinRestaurantBundle/Resources/config/restaurant_routes.yml"
+customer:
+    type: rest
+    resource: "@SorinRestaurantBundle/Resources/config/customer_routes.yml"

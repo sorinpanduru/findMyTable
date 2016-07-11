@@ -20,4 +20,8 @@ security:
             provider: sorin_user_provider
     access_control:
         - { path: ^/v1/restaurants, roles: ROLE_CUSTOMER }
+        - { path: ^/v1/cancels, roles: ROLE_CUSTOMER }
         - { path: ^/v1/confirms, roles: ROLE_RESTAURANT_USER}
+        - { path: ^/v1/declines, roles: ROLE_RESTAURANT_USER}
+        - { path: ^/v1/customer/edit, roles: ROLE_CUSTOMER }
+        - { path: ^/v1/customer/remove, roles: ROLE_CUSTOMER }

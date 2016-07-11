@@ -52,7 +52,42 @@ class Restaurant
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * @MaxDepth(1)
      */
-    public $user;
+    protected $user;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $address1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $address2;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $zipCode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $city;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $country;
 
     public function __construct()
     {
@@ -98,7 +133,7 @@ class Restaurant
      * @param \Sorin\Bundle\RestaurantBundle\Entity\RestaurantImage $images
      * @return Restaurant
      */
-    public function addImage(\Sorin\Bundle\RestaurantBundle\Entity\RestaurantImage $images)
+    public function addImage(RestaurantImage $images)
     {
         $this->images[] = $images;
 
@@ -110,7 +145,7 @@ class Restaurant
      *
      * @param \Sorin\Bundle\RestaurantBundle\Entity\RestaurantImage $images
      */
-    public function removeImage(\Sorin\Bundle\RestaurantBundle\Entity\RestaurantImage $images)
+    public function removeImage(RestaurantImage $images)
     {
         $this->images->removeElement($images);
     }
