@@ -20,3 +20,4 @@ security:
             provider: sorin_user_provider
     access_control:
         - { path: ^/v1/restaurants, roles: ROLE_CUSTOMER }
+        - { path: ^/v1/confirms, roles: ROLE_RESTAURANT_USER}
