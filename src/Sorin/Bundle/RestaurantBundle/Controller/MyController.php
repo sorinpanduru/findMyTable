@@ -28,7 +28,7 @@ class MyController extends FOSRestController
     {
         $serializer = SerializerBuilder::create()->build();
         $jsonContent = $serializer->serialize($entity, 'json');
-        return new JsonResponse($jsonContent, $httpCode);
+        return new Response($jsonContent, $httpCode);
     }
     
     public static function throwError($message, $httpCode = JsonResponse::HTTP_INTERNAL_SERVER_ERROR)
@@ -37,7 +37,7 @@ class MyController extends FOSRestController
             'ok' => false,
             'message' => $message,
         );
-        return new JsonResponse($response, $httpCode);
+        return new Response($response, $httpCode);
     }
 
     /**

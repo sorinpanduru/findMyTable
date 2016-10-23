@@ -2,6 +2,7 @@ security:
     encoders:
         Sorin\Bundle\RestaurantBundle\Entity\User:
             algorithm: bcrypt
+            cost: 4
 
     providers:
         sorin_user_provider:
@@ -11,7 +12,7 @@ security:
 
     firewalls:
         dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            pattern:  ^/(_(profiler|wdt)|css|images|js|v1)/
             security: false
 
         default:
